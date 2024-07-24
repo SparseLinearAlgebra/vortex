@@ -1,5 +1,4 @@
-#define TS 32
-#define WIDTH 4
+#include "common.h"
 
 #if WIDTH == 1
     typedef float floatX;

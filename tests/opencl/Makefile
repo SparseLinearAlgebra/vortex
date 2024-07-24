@@ -22,9 +22,6 @@ all:
 	$(MAKE) -C sgemm2
 	$(MAKE) -C sgemm3
 	$(MAKE) -C psum
-	$(MAKE) -C kernel1
-	$(MAKE) -C kernel2
-	$(MAKE) -C kernel3
 
 run-simx:
 	$(MAKE) -C vecadd run-simx
@@ -46,9 +43,6 @@ run-simx:
 	$(MAKE) -C sgemm2 run-simx
 	$(MAKE) -C sgemm3 run-simx
 	$(MAKE) -C psum run-simx
-	$(MAKE) -C kernel1 run-simx
-	$(MAKE) -C kernel2 run-simx
-	$(MAKE) -C kernel3 run-simx
 
 run-rtlsim:
 	$(MAKE) -C vecadd run-rtlsim
@@ -70,9 +64,6 @@ run-rtlsim:
 	$(MAKE) -C sgemm2 run-rtlsim
 	$(MAKE) -C sgemm3 run-rtlsim
 	$(MAKE) -C psum run-rtlsim
-	$(MAKE) -C kernel1 run-rtlsim
-	$(MAKE) -C kernel2 run-rtlsim
-	$(MAKE) -C kernel3 run-rtlsim
 
 run-opae:
 	$(MAKE) -C vecadd run-opae
@@ -94,9 +85,6 @@ run-opae:
 	$(MAKE) -C sgemm2 run-opae
 	$(MAKE) -C sgemm3 run-opae
 	$(MAKE) -C psum run-opae
-	$(MAKE) -C kernel1 run-opae
-	$(MAKE) -C kernel2 run-opae
-	$(MAKE) -C kernel3 run-opae
 
 clean:
 	$(MAKE) -C vecadd clean
@@ -119,6 +107,3 @@ clean:
 	$(MAKE) -C sgemm2 clean
 	$(MAKE) -C sgemm3 clean
 	$(MAKE) -C psum clean
-	$(MAKE) -C kernel1 clean
-	$(MAKE) -C kernel2 clean
-	$(MAKE) -C kernel3 clean

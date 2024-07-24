@@ -9,7 +9,7 @@
 #include <time.h>
 #include <unistd.h>
 
-int TS = 0;
+int TS = 4;
 int M = 0, N = 0, K = 0;
 
 static void show_usage() {
@@ -110,11 +110,8 @@ static void cleanup() {
 
 static void parse_args(int argc, char **argv) {
   int c;
-  while ((c = getopt(argc, argv, "T:n:M:N:K:h?")) != -1) {
+  while ((c = getopt(argc, argv, "n:M:N:K:h?")) != -1) {
     switch (c) {
-    case 'T':
-      TS = atoi(optarg);
-      break;
     case 'n':
       M = N = K = atoi(optarg);
       break;
