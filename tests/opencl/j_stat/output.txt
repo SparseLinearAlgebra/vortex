@@ -1,0 +1,17 @@
+CONFIGS=-DNUM_CLUSTERS=1 -DNUM_CORES=4 -DNUM_WARPS=4 -DNUM_THREADS=4    
+running: CONFIGS=-DNUM_CLUSTERS=1 -DNUM_CORES=4 -DNUM_WARPS=4 -DNUM_THREADS=4     make -C ./ci/../runtime/simx
+running: OPTS=-N16 -M16 -K16 make -C ./ci/../tests/opencl/kernel4 run-simx
+make: Entering directory '/home/jblab/ivan_khromov/release/vortex/build/tests/opencl/kernel4'
+cp /home/jblab/ivan_khromov/release/vortex/tests/opencl/kernel4/common.h common.h
+LD_LIBRARY_PATH=/home/jblab/tools/pocl/lib:/home/jblab/ivan_khromov/release/vortex/build/runtime:/home/jblab/tools/llvm-vortex/lib::/usr/local/lib POCL_VORTEX_XLEN=32 LLVM_PREFIX=/home/jblab/tools/llvm-vortex POCL_VORTEX_BINTOOL="OBJCOPY=/home/jblab/tools/llvm-vortex/bin/llvm-objcopy /home/jblab/ivan_khromov/release/vortex/kernel/scripts/vxbin.py" POCL_VORTEX_CFLAGS="-march=rv32imaf -mabi=ilp32f -O3 -mcmodel=medany --sysroot=/home/jblab/tools/riscv32-gnu-toolchain/riscv32-unknown-elf --gcc-toolchain=/home/jblab/tools/riscv32-gnu-toolchain -fno-rtti -fno-exceptions -nostartfiles -nostdlib -fdata-sections -ffunction-sections -I/home/jblab/ivan_khromov/release/vortex/build/hw -I/home/jblab/ivan_khromov/release/vortex/kernel/include -DXLEN_32 -DNDEBUG -Xclang -target-feature -Xclang +vortex -Xclang -target-feature -Xclang +zicond -mllvm -disable-loop-idiom-all" POCL_VORTEX_LDFLAGS="-Wl,-Bstatic,--gc-sections,-T/home/jblab/ivan_khromov/release/vortex/kernel/scripts/link32.ld,--defsym=STARTUP_ADDR=0x80000000 /home/jblab/ivan_khromov/release/vortex/build/kernel/libvortex.a -L/home/jblab/tools/libc32/lib -lm -lc /home/jblab/tools/libcrt32/lib/baremetal/libclang_rt.builtins-riscv32.a" VORTEX_DRIVER=simx ./kernel4 -N16 -M16 -K16
+Using device: Vortex OpenGPU
+Execute the kernel
+Elapsed time: 235 ms
+Verify result
+PASSED!
+PERF: core0: instrs=11548, cycles=40923, IPC=0.282189
+PERF: core1: instrs=11548, cycles=41559, IPC=0.277870
+PERF: core2: instrs=11548, cycles=41327, IPC=0.279430
+PERF: core3: instrs=11548, cycles=41707, IPC=0.276884
+PERF: instrs=46192, cycles=41707, IPC=1.107536
+make: Leaving directory '/home/jblab/ivan_khromov/release/vortex/build/tests/opencl/kernel4'
