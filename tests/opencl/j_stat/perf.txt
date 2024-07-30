@@ -1,3 +1,0 @@
-kernel1
---warps=8 --cores=8 --threads=8
-cycles=57927
