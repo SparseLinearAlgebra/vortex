@@ -103,8 +103,6 @@ static void cleanup() {
     clReleaseContext(context);
   if (device_id)
     clReleaseDevice(device_id);
-  // if (platform_id)
-  // clReleasePlatform(platform_id);
   if (kernel_bin)
     free(kernel_bin);
 }
@@ -145,69 +143,10 @@ static void parse_args(int argc, char **argv) {
 int main(int argc, char **argv) {
   // parse command arguments
   parse_args(argc, argv);
-  //printf("%d", VX_CAPS_NUM_CORES);
-
-/*
-  // find device and platform
-  cl_uint platform_count = 0;
-  CL_CHECK(clGetPlatformIDs(0, NULL, &platform_count));
-  cl_platform_id *platforms =
-      (cl_platform_id *)malloc(platform_count * sizeof(cl_platform_id));
-  if (platforms == NULL) {
-    printf("Not enough memory");
-    cleanup();
-    exit(-1);
-  }
-  CL_CHECK(clGetPlatformIDs(platform_count, platforms, NULL));
-
-  bool gpu_device_selected = false;
-  bool any_device_selected = false;
-  for (int platform_index = 0; platform_index < (int)platform_count;
-       ++platform_index) {
-    cl_platform_id platform = platforms[platform_index];
-    cl_uint devices_count = 0;
-
-    CL_CHECK(
-        clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, NULL, &devices_count));
-    cl_device_id *devices =
-        (cl_device_id *)malloc(sizeof(cl_device_id) * devices_count);
-    if (devices == NULL) {
-      printf("Not enough memory");
-      cleanup();
-      return -1;
-    }
-    CL_CHECK(clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, devices_count,
-                            devices, NULL));
-    for (int device_index = 0; device_index < (int)devices_count; ++device_index) {
-      cl_device_id device = devices[device_index];
-      cl_device_type device_type;
-      CL_CHECK(clGetDeviceInfo(device, CL_DEVICE_TYPE, sizeof(device_type),
-                               &device_type, NULL));
-
-      if (device_type & CL_DEVICE_TYPE_GPU) {
-        gpu_device_selected = true;
-        any_device_selected = true;
-        platform_id = platform;
-        device_id = device;
-        break;
-      }
-      if (device_type & CL_DEVICE_TYPE_CPU) {
-        any_device_selected = true;
-        platform_id = platform;
-        device_id = device;
-      }
-    }
-    if (gpu_device_selected)
-      break;
-  }
-  if (!any_device_selected) {
-    printf("No device found");
-    cleanup();
-    return -1;
-  }*/
 
   CL_CHECK(clGetPlatformIDs(1, &platform_id, NULL));
   CL_CHECK(clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, NULL));
+
   // create context
   cl_context_properties context_properties[]{
       CL_CONTEXT_PLATFORM, cl_context_properties(platform_id), 0};
@@ -217,10 +156,11 @@ int main(int argc, char **argv) {
   char device_string[1024];
   clGetDeviceInfo(device_id, CL_DEVICE_NAME, sizeof(device_string), &device_string, NULL);
   printf("Using device: %s\n", device_string);
+
   // create command queue
   command_queue = CL_CHECK2(clCreateCommandQueue(context, device_id, 0, &_err));
 
-  // generate data
+  // generate input data
   float *A, *B, *C;
   A = (float *)(malloc(M * K * sizeof(float)));
   B = (float *)(malloc(N * K * sizeof(float)));
@@ -230,10 +170,11 @@ int main(int argc, char **argv) {
     cleanup();
     return -1;
   }
-  for (int i = 0; i < M * N; i++) {
-    A[i] = 1;
-    B[i] = 1;
-  }
+  srand(time(NULL));
+  for (int i = 0; i < M * K; i++)
+    A[i] = (int)((float)rand() / (float)RAND_MAX);
+  for (int i = 0; i < N * K; i++)
+    B[i] = (int)((float)rand() / (float)RAND_MAX);
 
   // create buffers
   a_memobj =
@@ -333,5 +274,10 @@ int main(int argc, char **argv) {
 
   // free resureses
   cleanup();
+  free(A);
+  free(B);
+  free(C);
+  free(log);
+  free(C_cpu);
   return errors;
 }
