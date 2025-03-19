@@ -32,6 +32,9 @@ VX_CFLAGS  += -I$(ROOT_DIR)/hw -I$(VORTEX_HOME)/kernel/include -DXLEN_$(XLEN) -D
 VX_CFLAGS  += -Xclang -target-feature -Xclang +vortex
 VX_CFLAGS  += -Xclang -target-feature -Xclang +zicond
 VX_CFLAGS  += -mllvm -disable-loop-idiom-all
+
+VX_CFLAGS  += -save-temps
+
 #VX_CFLAGS += -mllvm -vortex-branch-divergence=0
 #VX_CFLAGS += -mllvm -print-after-all
 

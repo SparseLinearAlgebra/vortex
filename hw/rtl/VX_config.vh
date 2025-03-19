@@ -256,6 +256,10 @@
 `define LMEM_BASE_ADDR  `STACK_BASE_ADDR
 `endif
 
+`ifndef NEW_STACK_BASE_ADDR
+`define NEW_STACK_BASE_ADDR `LMEM_BASE_ADDR + (`XLEN'(1 << `LMEM_LOG_SIZE))
+`endif
+
 `ifndef IO_COUT_ADDR
 `define IO_COUT_ADDR    `IO_BASE_ADDR
 `endif
